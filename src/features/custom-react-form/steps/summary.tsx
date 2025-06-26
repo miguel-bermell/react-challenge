@@ -1,6 +1,7 @@
 import { Button } from '@components/ui/button';
 import { LabelInLine } from '@components/ui/label-inline';
 import type { UseFormReturn } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from '@/lib/utils';
 
@@ -17,20 +18,27 @@ export const Summary = ({
   className?: string;
 }) => {
   const { accommodation, owner } = form.getValues();
+  const { t } = useTranslation(['custom-react-form']);
 
   return (
     <div className={cn('flex flex-col flex-1 space-y-4', className)}>
       <fieldset className="space-y-2 flex-1/2">
-        <Title>Accommodation</Title>
-        <LabelInLine label="Name">{accommodation.name}</LabelInLine>
-        <LabelInLine label="Address">{accommodation.address}</LabelInLine>
-        <LabelInLine label="Description">
+        <Title>{t('steps.accommodation.title')}</Title>
+        <LabelInLine label={t('steps.accommodation.form.name')}>
+          {accommodation.name}
+        </LabelInLine>
+        <LabelInLine label={t('steps.accommodation.form.address')}>
+          {accommodation.address}
+        </LabelInLine>
+        <LabelInLine label={t('steps.accommodation.form.description')}>
           {accommodation.description}
         </LabelInLine>
         <LabelInLine label="Type">{accommodation.type}</LabelInLine>
         {accommodation.photos?.length ? (
           <>
-            <p className="font-semibold">Photos:</p>
+            <p className="font-semibold">
+              {t('steps.accommodation.form.photos')}:
+            </p>
             <div className="flex gap-2">
               {accommodation.photos.map((photo, index) => (
                 <img
@@ -45,16 +53,22 @@ export const Summary = ({
         ) : null}
       </fieldset>
       <fieldset className="space-y-2 flex-1/2">
-        <Title>Owner</Title>
-        <LabelInLine label="Name">{owner.name}</LabelInLine>
-        <LabelInLine label="Email">{owner.email}</LabelInLine>
-        <LabelInLine label="Phone">{owner.phone}</LabelInLine>
+        <Title>{t('steps.owner.title')}</Title>
+        <LabelInLine label={t('steps.owner.form.name')}>
+          {owner.name}
+        </LabelInLine>
+        <LabelInLine label={t('steps.owner.form.email')}>
+          {owner.email}
+        </LabelInLine>
+        <LabelInLine label={t('steps.owner.form.phone')}>
+          {owner.phone}
+        </LabelInLine>
       </fieldset>
       <div className="flex gap-5 justify-end">
         <Button type="button" variant="outline" onClick={onBack}>
-          Back
+          {t('buttons.back')}
         </Button>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{t('buttons.submit')}</Button>
       </div>
     </div>
   );

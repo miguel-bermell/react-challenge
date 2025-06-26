@@ -9,11 +9,19 @@
     <script>
       const card = document.createElement("custom-card");
       const form = document.createElement("custom-react-form");
+      const toggleLang = () => {
+        form.setAttribute("lang", form.getAttribute("lang") === "es" ? "en" : "es");
+      };
       form.addEventListener("custom-react-submit", (e) =>
         console.log("form data =>>", e.detail)
       );
       card.appendChild(form);
+      const button = document.createElement("button");
+      button.textContent = "Toggle Language";
+      button.className = 'mt-7 cursor-pointer border px-4 py-2 rounded block mx-auto';
+      button.addEventListener("click", toggleLang);
       document.body.appendChild(card);
+      document.body.appendChild(button);
     </script>
   </body>
 </html>

@@ -1,5 +1,3 @@
-import '../../index.css';
-
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { CustomReactForm } from './form';

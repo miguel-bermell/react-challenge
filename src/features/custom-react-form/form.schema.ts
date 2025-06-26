@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { z } from 'zod';
 
 import {
@@ -6,79 +7,127 @@ import {
   MAX_PHOTO_WIDTH,
 } from './constants/custom-react-form';
 
-const accommodationSchema = z.object({
-  name: z
-    .string()
-    .min(4, { message: 'Name must be at least 4 characters long' })
-    .max(128, { message: 'Name must be at most 128 characters long' })
-    .regex(/^[a-zA-Z\s]+$/, {
-      message: 'Name can only contain letters',
-    }),
-  address: z
-    .string()
-    .min(4, { message: 'Address must be at least 4 characters long' })
-    .max(128, { message: 'Address must be at most 128 characters long' }),
-  description: z
-    .string()
-    .min(128, { message: 'Description must be at least 128 characters long' })
-    .max(2048, { message: 'Description must be at most 2048 characters long' })
-    .optional()
-    .or(z.literal('')),
-  type: z.nativeEnum(ACCOMMODATION_TYPE, {
-    errorMap: () => ({
-      message: 'Type is required',
-    }),
-  }),
-  photos: z
-    .array(z.object({ file: z.instanceof(File), preview: z.string() }))
-    .max(2, { message: 'Max 2 photos' })
-    .optional()
-    .refine(
-      async (photos) => {
-        if (!photos || !photos.length) return true;
-
-        const results = await Promise.all(
-          photos.map(
-            (photo) =>
-              new Promise<boolean>((resolve) => {
-                const img = new Image();
-                img.onload = () => {
-                  resolve(
-                    img.width <= MAX_PHOTO_WIDTH &&
-                      img.height <= MAX_PHOTO_HEIGHT
-                  );
-                };
-                img.onerror = () => resolve(false);
-                img.src = photo.preview;
-              })
-          )
-        );
-        return results.every(Boolean);
-      },
-      {
-        message: `All photos must be at most ${MAX_PHOTO_WIDTH}x${MAX_PHOTO_HEIGHT} pixels`,
-      }
-    ),
-});
-
-const ownerSchema = z.object({
-  name: z
-    .string()
-    .min(4, { message: 'Name must be at least 4 characters long' })
-    .max(64, { message: 'Name must be at most 64 characters long' }),
-  email: z.string().email({ message: 'Email must be a valid email address' }),
-  phone: z
-    .union([
-      z.literal(''),
-      z.string().regex(/^\d{0,9}$/, {
-        message: 'Phone number must be up to 9 digits',
+const buildAccommodationSchema = (t: TFunction) =>
+  z.object({
+    name: z
+      .string()
+      .min(4, {
+        message: t('errors.minLength', {
+          field: t('steps.accommodation.form.name'),
+          min: 4,
+        }),
+      })
+      .max(128, {
+        message: t('errors.maxLength', {
+          field: t('steps.accommodation.form.name'),
+          max: 128,
+        }),
+      })
+      .regex(/^[a-zA-Z\s]+$/, { message: t('errors.nameRegex') }),
+    address: z
+      .string()
+      .min(4, {
+        message: t('errors.minLength', {
+          field: t('steps.accommodation.form.address'),
+          min: 4,
+        }),
+      })
+      .max(128, {
+        message: t('errors.maxLength', {
+          field: t('steps.accommodation.form.address'),
+          max: 128,
+        }),
+      })
+      .regex(/^[a-zA-Z\s]+$/, { message: t('errors.nameRegex') }),
+    description: z
+      .string()
+      .min(128, {
+        message: t('errors.minLength', {
+          field: t('steps.accommodation.form.description'),
+          min: 128,
+        }),
+      })
+      .max(2048, {
+        message: t('errors.maxLength', {
+          field: t('steps.accommodation.form.description'),
+          max: 2048,
+        }),
+      })
+      .optional()
+      .or(z.literal('')),
+    type: z.nativeEnum(ACCOMMODATION_TYPE, {
+      errorMap: () => ({
+        message: t('errors.required', {
+          field: t('steps.accommodation.form.type'),
+        }),
       }),
-    ])
-    .optional(),
-});
+    }),
+    photos: z
+      .array(z.object({ file: z.instanceof(File), preview: z.string() }))
+      .max(2, { message: t('errors.maxPhotos', { max: 2 }) })
+      .optional()
+      .refine(
+        async (photos) => {
+          if (!photos || !photos.length) return true;
 
-export const formSchema = z.object({
-  accommodation: accommodationSchema,
-  owner: ownerSchema,
-});
-export type formValues = z.infer<typeof formSchema>;
+          const results = await Promise.all(
+            photos.map(
+              (photo) =>
+                new Promise<boolean>((resolve) => {
+                  const img = new Image();
+                  img.onload = () => {
+                    resolve(
+                      img.width <= MAX_PHOTO_WIDTH &&
+                        img.height <= MAX_PHOTO_HEIGHT
+                    );
+                  };
+                  img.onerror = () => resolve(false);
+                  img.src = photo.preview;
+                })
+            )
+          );
+          return results.every(Boolean);
+        },
+        {
+          message: t('errors.photoSize', {
+            width: MAX_PHOTO_WIDTH,
+            height: MAX_PHOTO_HEIGHT,
+          }),
+        }
+      ),
+  });
+
+const buildOwnerSchema = (t: TFunction) =>
+  z.object({
+    name: z
+      .string()
+      .min(4, {
+        message: t('errors.minLength', {
+          field: t('steps.owner.form.name'),
+          min: 4,
+        }),
+      })
+      .max(64, {
+        message: t('errors.maxLength', {
+          field: t('steps.owner.form.name'),
+          max: 64,
+        }),
+      }),
+    email: z.string().email({ message: t('errors.invalidEmail') }),
+    phone: z
+      .union([
+        z.literal(''),
+        z.string().regex(/^\d{0,9}$/, {
+          message: t('errors.invalidPhone'),
+        }),
+      ])
+      .optional(),
+  });
+
+export const buildFormSchema = (t: TFunction) =>
+  z.object({
+    accommodation: buildAccommodationSchema(t),
+    owner: buildOwnerSchema(t),
+  });
+
+export type formValues = z.infer<ReturnType<typeof buildFormSchema>>;
