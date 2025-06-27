@@ -42,6 +42,7 @@ export const ImagesUploader = ({ value, onChange, max = 2 }: Props) => {
       ))}
       {value.length < max && (
         <Button
+          data-testid="add-photo-button"
           type="button"
           variant="outline"
           onClick={() => inputRef.current?.click()}
@@ -49,6 +50,7 @@ export const ImagesUploader = ({ value, onChange, max = 2 }: Props) => {
         >
           Add Photo
           <Input
+            data-testid="photo-input"
             ref={inputRef}
             type="file"
             accept="image/*"

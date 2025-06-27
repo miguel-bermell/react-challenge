@@ -28,7 +28,10 @@ export const Owner = ({
 }) => {
   const { t } = useTranslation(['custom-react-form']);
   return (
-    <div className={cn('flex flex-col flex-1', className)}>
+    <div
+      data-testid="step-owner"
+      className={cn('flex flex-col flex-1', className)}
+    >
       <fieldset className="space-y-4 flex-1">
         <Title>{t('steps.owner.title')}</Title>
         <FormField

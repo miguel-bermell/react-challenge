@@ -38,7 +38,10 @@ export const Accommodation = ({
   const { t } = useTranslation(['custom-react-form']);
 
   return (
-    <div className={cn('flex flex-col flex-1', className)}>
+    <div
+      data-testid="step-accommodation"
+      className={cn('flex flex-col flex-1', className)}
+    >
       <fieldset className="flex-1 space-y-4">
         <Title>{t('steps.accommodation.title')}</Title>
         <FormField
@@ -106,7 +109,10 @@ export const Accommodation = ({
               <FormLabel>{t('steps.accommodation.form.type')}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger
+                    data-testid="accommodation-type-trigger"
+                    className="w-[180px]"
+                  >
                     <SelectValue
                       placeholder={t(
                         'steps.accommodation.form.typePlaceholder'

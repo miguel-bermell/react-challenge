@@ -21,7 +21,10 @@ export const Summary = ({
   const { t } = useTranslation(['custom-react-form']);
 
   return (
-    <div className={cn('flex flex-col flex-1 space-y-4', className)}>
+    <div
+      data-testid="step-summary"
+      className={cn('flex flex-col flex-1 space-y-4', className)}
+    >
       <fieldset className="space-y-2 flex-1/2">
         <Title>{t('steps.accommodation.title')}</Title>
         <LabelInLine label={t('steps.accommodation.form.name')}>
