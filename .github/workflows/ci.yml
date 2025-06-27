@@ -25,6 +25,9 @@ jobs:
       - name: 📥 Install Dependencies
         run: pnpm install
 
+      - name: 🛠️ Install Cypress binary
+        run: pnpm exec cypress install
+        
       - name: 🔍 Run Linter
         run: pnpm run lint
 
