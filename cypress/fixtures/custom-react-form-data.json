@@ -1,0 +1,13 @@
+{
+  "accommodation": {
+    "name": "Test House",
+    "address": "Test Street",
+    "description":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lacinia a arcu id luctus. Curabitur porttitor molestie urna, sed consectetur est sodales nec. Phasellus blandit ipsum at ipsum feugiat euismod.",
+    "type": "apartment"
+  },
+  "owner": {
+    "name": "Pepito Langostino",
+    "email": "pepito@test.com",
+    "phone": "123456789"
+  }
+}

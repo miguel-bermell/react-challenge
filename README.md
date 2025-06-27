@@ -1,5 +1,41 @@
-# Avantio React Challenge
-Multi-Step Accommodation Creation Form.
+# How to run this technical test
+
+You have two ways to test the form component:
+
+## 1. Storybook
+
+1. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+2. Start Storybook:
+
+   ```bash
+   pnpm run docs
+   ```
+
+3. Open the URL shown in your terminal ([http://localhost:6006](http://localhost:6006)).
+
+4. You will find the form component under the "Components" section.  
+
+## 2. Web Component in HTML
+
+1. Build the project:
+
+   ```bash
+   pnpm run build
+   ```
+
+2. Open the file `custom-form-result.html` in your browser.
+
+   - This file loads the compiled Web Components.
+   - You can interact with the form, validate inputs, and submit the form.
+   - Use the "Toggle Language" button to switch between English and Spanish.
+   - On submit, the form data will be logged in the browser console.
+
+---
 
 ## Main Goal
 The main goal of this technical test is to develop a form for creating an accommodation.
